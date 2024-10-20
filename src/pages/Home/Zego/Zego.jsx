@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 
 const Zego = () => {
@@ -26,16 +26,17 @@ const Zego = () => {
             class="w-full p-2 border border-gray-300 rounded"
           />
           <button
-            class="btn mt-2 bg-blue-500 text-white rounded"
+            class="btn mt-2 bg-blue-500 text-white hover:text-black rounded"
             onClick={submitHandler}
           >
             Join
           </button>
-          <button
-            class="btn mt-2 text-black rounded ml-5"
+          <Link
+            to={'/login'}
+            class="btn mt-2 text-gray-700 hover:text-blue-950 rounded ml-5"
           >
             Login
-          </button>
+          </Link>
         </div>
 
         {/* <!-- Right Div (60%) --> */}

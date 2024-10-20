@@ -1,7 +1,7 @@
 import {
-    createBrowserRouter,
-   
-  } from "react-router-dom";
+  createBrowserRouter,
+
+} from "react-router-dom";
 import Main from "../Layout/Main";
 import Home from "../pages/Home/Home/Home";
 import REDetails from "../pages/REDetails/REDetails";
@@ -18,72 +18,77 @@ import Campus from "../pages/Campus/Campus";
 import Student from "../pages/Student/Student";
 import Schedule from "../pages/Schedule/Schedule";
 import VideoConferance from "../pages/VideoConferance/VideoConferance";
+import Login from "../pages/Login/Login";
 
- export const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Main></Main>,
-      children:[
-        {
-            path: '/',
-            element: <Home></Home>
-        },
-        {
-          path: "/cricket",
-          element: <REDetails></REDetails>,
-        },
-        {
-          path: "/programming-hero",
-          element: <ProgrammingHero></ProgrammingHero>,
-        },
-        {
-          path: "/cse",
-          element: <CSE></CSE>,
-        },
-        {
-          path: "/ice",
-          element: <ICE></ICE>,
-        },
-        {
-          path: "/eee",
-          element: <EEE></EEE>,
-        },
-        {
-          path: "/ce",
-          element: <CE></CE>,
-        },
-        {
-          path: "/Facilities",
-          element: <Facilities></Facilities> ,
-        },
-        {
-          path: "/departments",
-          element: <Departments></Departments> ,
-        },
-        {
-          path: "/teacher",
-          element: <Teacher></Teacher> ,
-        },
-        {
-          path: "/admission",
-          element: <Admission></Admission> ,
-        },
-        {
-          path: "/campus",
-          element: <Campus></Campus> ,
-        },
-        {
-          path: "/student",
-          element: <Student></Student>,
-        },
-        {
-          path: "/sched",
-          element: <Schedule></Schedule>,
-        },
-        {
-          path: "/room/:id",
-          element: <VideoConferance></VideoConferance>,
-        },
-      ]
-    },
-  ]);
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Main></Main>,
+    children: [
+      {
+        path: '/',
+        element: <Home></Home>
+      },
+      {
+        path: "/cricket",
+        element: <REDetails></REDetails>,
+      },
+      {
+        path: "/programming-hero",
+        element: <ProgrammingHero></ProgrammingHero>,
+      },
+      {
+        path: "/cse",
+        element: <CSE></CSE>,
+      },
+      {
+        path: "/ice",
+        element: <ICE></ICE>,
+      },
+      {
+        path: "/eee",
+        element: <EEE></EEE>,
+      },
+      {
+        path: "/ce",
+        element: <CE></CE>,
+      },
+      {
+        path: "/Facilities",
+        element: <Facilities></Facilities>,
+      },
+      {
+        path: "/departments",
+        element: <Departments></Departments>,
+      },
+      {
+        path: "/teacher",
+        element: <Teacher></Teacher>,
+      },
+      {
+        path: "/admission",
+        element: <Admission></Admission>,
+      },
+      {
+        path: "/campus",
+        element: <Campus></Campus>,
+      },
+      {
+        path: "/student",
+        element: <Student></Student>,
+      },
+      {
+        path: "/sched",
+        element: <Schedule></Schedule>,
+      },
+      {
+        path: "/room/:id",
+        element: <VideoConferance></VideoConferance>,
+      },
+      {
+        path: '/login',
+        element: <Login></Login>
+      }
+    ]
+  },
+]);
