@@ -17,15 +17,15 @@ const auth = getAuth(app)
 const googleProvider = new GoogleAuthProvider()
 
 const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null)
-    const [loading, setLoading] = useState(true)
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const createUser = (email, password) => {
         setLoading(true)
         return createUserWithEmailAndPassword(auth, email, password)
     }
 
-    const signIn = (email, password) => {
+    const signInUser = (email, password) => {
         setLoading(true)
         return signInWithEmailAndPassword(auth, email, password)
     }
@@ -35,66 +35,43 @@ const AuthProvider = ({ children }) => {
         return signInWithPopup(auth, googleProvider)
     }
 
-
-    const logOut = async () => {
-        setLoading(true)
-        await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
-            withCredentials: true,
-        })
-        return signOut(auth)
-    }
-
     const updateUserProfile = (name, photo) => {
         return updateProfile(auth.currentUser, {
-            displayName: name,
-            photoURL: photo,
+            displayName: name, photoURL: photo
         })
     }
 
-
-    // save data
-    const saveUser = async user => {
-        const currentUser = {
-            email: user?.email,
-            role: 'guest',
-            status: 'Verified'
-        }
-        const { data } = await axios.put(
-            `${import.meta.env.VITE_API_URL}/user`,
-            currentUser)
-        return data;
+    const logOut = () => {
+        setLoading(true)
+        return signOut(auth);
     }
 
-    // onAuthStateChange
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, currentUser => {
-            setUser(currentUser)
-            if (currentUser) {
-                // getToken(currentUser.email)
-                saveUser(currentUser)
-            }
-            setLoading(false)
+        const unSubscribe = onAuthStateChanged(auth, currentUser => {
+            setUser(currentUser);
+            setLoading(false);
         })
         return () => {
-            return unsubscribe()
+            unSubscribe();
         }
-    }, [])
+    }, []);
 
     const authInfo = {
-        user,
-        loading,
-        setLoading,
         createUser,
-        signIn,
+        signInUser,
         signInWithGoogle,
-        logOut,
         updateUserProfile,
+        user,
+        logOut,
+        setLoading,
+        loading
     }
-
     return (
-        <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
-    )
-}
+        <AuthContext.Provider value={authInfo}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
 
 AuthProvider.propTypes = {
     // Array of children.

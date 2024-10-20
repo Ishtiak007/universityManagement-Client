@@ -87,7 +87,9 @@ import React from "react";
 // import "./Navbar.css";
 import log from "../../../assets/123.png";
 import { Link } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
 const Navbar = () => {
+  const { user } = useAuth()
   return (
     <div>
       <div className="navbar fixed z-10  max-w-screen-xl text-sky-600 bg-white">
@@ -223,6 +225,24 @@ const Navbar = () => {
                 </ul>
               </details>
             </li>
+            <li>
+              <details>
+                <summary>About</summary>
+                <ul className="p-2">
+                  <li>
+                    <a>Submenu 1</a>
+                  </li>
+                  <li>
+                    <a>Submenu 2</a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+            <Link to={user ? "/profile" : "/login"}>
+              <li>
+                <a>Profile</a>
+              </li>
+            </Link>
             {/* <li>
               <a>Item 3</a>
             </li> */}

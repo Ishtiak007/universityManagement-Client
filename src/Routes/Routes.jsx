@@ -20,6 +20,7 @@ import Schedule from "../pages/Schedule/Schedule";
 import VideoConferance from "../pages/VideoConferance/VideoConferance";
 import Login from "../pages/Login/Login";
 import SignUp from "../pages/SignUp/SignUp";
+import Profile from "../pages/Profile/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -93,6 +94,10 @@ export const router = createBrowserRouter([
       {
         path: '/signup',
         element: <SignUp></SignUp>
+      },
+      {
+        path: '/profile',
+        element: <Profile></Profile>
       }
     ]
   },

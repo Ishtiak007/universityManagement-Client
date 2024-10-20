@@ -2,52 +2,55 @@ import { FcGoogle } from "react-icons/fc";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 
 const Login = () => {
-    const { signInUser, signInWithGoogle } = useAuth()
-    const navigate = useNavigate();
+    const { signInUser, signInWithGoogle, loading, setLoading, } = useAuth();
+    const [email, setEmail] = useState('');
     const location = useLocation();
-    // const axiosPublic = useAxiosPublic();
-    const from = location.state?.from?.pathname || "/";
+    const from = location?.state || '/';
+    const axiosPublic = useAxiosPublic();
+    const navigate = useNavigate();
 
 
-    const handleLogin = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const form = e.target;
+        const form = e.target
         const email = form.email.value;
         const password = form.password.value;
-        const user = { email, password }
-        console.log(user);
 
-        signInUser(email, password)
-            .then(res => {
-                const user = res.user;
-                console.log(user)
-                toast.success('User Log in Successfully')
-                navigate(from, { replace: true });
-            })
-            .catch(err => {
-                console.log(err)
-            })
+        try {
+            setLoading(true)
+            // number 1: sign in user
+
+            await signInUser(email, password)
+
+            navigate(from)
+            toast.success('Signin successfully done')
+
+        } catch (err) {
+            console.log(err);
+            toast.error(err.message);
+            setLoading(false);
+        }
     }
 
 
-
-    const handleGoogleLogIn = () => {
+    const handleGoogleSignIn = () => {
         signInWithGoogle()
             .then(res => {
                 console.log(res);
                 const userInfo = {
                     email: res.user?.email,
-                    name: res.user?.displayName
+                    name: res.user?.displayName,
+                    photoURL: res.user?.photoURL
                 }
                 axiosPublic.post('/users', userInfo)
                     .then(res => {
-                        console.log(res.data);
-                        toast.success('Google Log In successfully!');
-                        console.log(res.user);
-                        navigate(location?.state ? location.state : '/');
+                        navigate(from)
+                        toast.success('Signup successfully done')
                     })
             })
             .catch(err => {
@@ -64,7 +67,7 @@ const Login = () => {
                     </p>
                 </div>
                 <form
-                    onSubmit={handleLogin}
+                    onSubmit={handleSubmit}
                     noValidate=''
                     action=''
                     className='space-y-6 ng-untouched ng-pristine ng-valid'
@@ -120,7 +123,7 @@ const Login = () => {
                     <div className='flex-1 h-px sm:w-16 dark:bg-gray-700'></div>
                 </div>
                 <button
-                    onClick={handleGoogleLogIn}
+                    onClick={handleGoogleSignIn}
                     className='disabled:cursor-not-allowed flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
                     <FcGoogle size={32} />
 

@@ -1,12 +1,21 @@
 import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import toast from 'react-hot-toast';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const SignUp = () => {
-    const { createUser, signInWithGoogle, loading, setLoading } = useAuth();
-    const navigate = useNavigate()
+    const { createUser, signInWithGoogle, updateUserProfile } = useAuth();
+    const location = useLocation();
+    const from = location?.state || '/';
+    const axiosPublic = useAxiosPublic();
+    const navigate = useNavigate();
+
+
+
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const form = e.target
@@ -14,29 +23,48 @@ const SignUp = () => {
         const email = form.email.value;
         const password = form.password.value;
 
-        try {
-            setLoading(true)
-            const result = await createUser(email, password)
-            console.log(result)
-
-            // await updateUserProfile(name, image_url)
-            navigate('/')
-            toast.success('Signup successfully done')
-
-        } catch (err) {
-            console.log(err);
-            toast.error(err.message)
-        }
+        createUser(email, password)
+            .then(res => {
+                updateUserProfile(name)
+                    .then(() => {
+                        // console.log('user Updated')
+                        const userInfo = {
+                            name: name,
+                            email: email
+                        }
+                        axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    console.log('User added to the database')
+                                    toast.success('Signup successfully done')
+                                    navigate(from, { replace: true });
+                                }
+                            })
+                    })
+                    .catch(error => toast.error(error.message))
+            })
+            .catch(error => toast.error(error.message))
     }
 
-    const handleGooleSignIn = async () => {
-        try {
-            await signInWithGoogle()
-            navigate('/')
-            toast.success('Signup successfully done')
-        } catch (err) {
-            toast.error(err.message)
-        }
+
+    const handleGoogleSignIn = () => {
+        signInWithGoogle()
+            .then(res => {
+                console.log(res);
+                const userInfo = {
+                    email: res.user?.email,
+                    name: res.user?.displayName,
+                    photoURL: res.user?.photoURL
+                }
+                axiosPublic.post('/users', userInfo)
+                    .then(res => {
+                        navigate(from)
+                        toast.success('Signup successfully done')
+                    })
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
     return (
         <div className='flex justify-center items-center min-h-screen'>
@@ -113,7 +141,7 @@ const SignUp = () => {
                     <div className='flex-1 h-px sm:w-16 dark:bg-gray-700'></div>
                 </div>
                 <button
-                    onClick={handleGooleSignIn}
+                    onClick={handleGoogleSignIn}
                     className='disabled:cursor-not-allowed flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
                     <FcGoogle size={32} />
 
