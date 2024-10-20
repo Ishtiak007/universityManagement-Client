@@ -19,6 +19,7 @@ import Student from "../pages/Student/Student";
 import Schedule from "../pages/Schedule/Schedule";
 import VideoConferance from "../pages/VideoConferance/VideoConferance";
 import Login from "../pages/Login/Login";
+import SignUp from "../pages/SignUp/SignUp";
 
 export const router = createBrowserRouter([
   {
@@ -88,6 +89,10 @@ export const router = createBrowserRouter([
       {
         path: '/login',
         element: <Login></Login>
+      },
+      {
+        path: '/signup',
+        element: <SignUp></SignUp>
       }
     ]
   },
