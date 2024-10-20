@@ -1,10 +1,40 @@
 import { FcGoogle } from "react-icons/fc";
-import { TbFidgetSpinner } from "react-icons/tb";
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 
 const Login = () => {
-    const loading = false
+    const { signInUser, googleLogIn } = useAuth()
+    const handleLogin = e => {
+        e.preventDefault();
+        const email = e.target.email.value;
+        const password = e.target.password.value;
+
+        signInUser(email, password)
+            .then((result) => {
+                toast.success('Your Login process Successfully done!');
+                console.log(result.user);
+                e.target.reset();
+                navigate(location?.state ? location.state : '/');
+            })
+            .catch((error) => {
+                toast.error("Invalid login credentials , Provide your valid email and password")
+                console.log(error)
+            })
+    }
+
+    const handleGoogleLogIn = () => {
+        googleLogIn()
+            .then((res) => {
+                toast.success('Google Log In successfully!');
+                console.log(res.user);
+                navigate(location?.state ? location.state : '/');
+            })
+            .catch((error) => {
+                toast.error("Invalid login credentials")
+                console.log(error)
+            })
+    }
     return (
         <div className='flex justify-center items-center min-h-screen'>
             <div className='flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900'>
@@ -15,7 +45,7 @@ const Login = () => {
                     </p>
                 </div>
                 <form
-                    // onSubmit={handleSubmit}
+                    onSubmit={handleLogin}
                     noValidate=''
                     action=''
                     className='space-y-6 ng-untouched ng-pristine ng-valid'
@@ -71,7 +101,7 @@ const Login = () => {
                     <div className='flex-1 h-px sm:w-16 dark:bg-gray-700'></div>
                 </div>
                 <button
-                    // onClick={handleGooleSignIn} 
+                    onClick={handleGoogleLogIn}
                     className='disabled:cursor-not-allowed flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
                     <FcGoogle size={32} />
 
