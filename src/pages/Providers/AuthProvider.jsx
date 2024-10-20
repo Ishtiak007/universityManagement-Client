@@ -5,7 +5,6 @@ import {
     createUserWithEmailAndPassword,
     getAuth,
     onAuthStateChanged,
-    sendPasswordResetEmail,
     signInWithEmailAndPassword,
     signInWithPopup,
     signOut,
@@ -51,15 +50,6 @@ const AuthProvider = ({ children }) => {
             photoURL: photo,
         })
     }
-    // Get token from server
-    //   const getToken = async email => {
-    //     const { data } = await axios.post(
-    //       `${import.meta.env.VITE_API_URL}/jwt`,
-    //       { email },
-    //       { withCredentials: true }
-    //     )
-    //     return data
-    //   }
 
 
     // save data

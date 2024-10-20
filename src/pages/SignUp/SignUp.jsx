@@ -1,8 +1,43 @@
 import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+import toast from 'react-hot-toast';
 
 const SignUp = () => {
+    const { createUser, signInWithGoogle, loading, setLoading } = useAuth();
+    const navigate = useNavigate()
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const form = e.target
+        const name = form.name.value;
+        const email = form.email.value;
+        const password = form.password.value;
+
+        try {
+            setLoading(true)
+            const result = await createUser(email, password)
+            console.log(result)
+
+            // await updateUserProfile(name, image_url)
+            navigate('/')
+            toast.success('Signup successfully done')
+
+        } catch (err) {
+            console.log(err);
+            toast.error(err.message)
+        }
+    }
+
+    const handleGooleSignIn = async () => {
+        try {
+            await signInWithGoogle()
+            navigate('/')
+            toast.success('Signup successfully done')
+        } catch (err) {
+            toast.error(err.message)
+        }
+    }
     return (
         <div className='flex justify-center items-center min-h-screen'>
             <div className='flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900'>
@@ -11,7 +46,7 @@ const SignUp = () => {
                     <p className='text-sm text-gray-400'>Welcome to REC 2.0</p>
                 </div>
                 <form
-                    // onSubmit={handleSubmit}
+                    onSubmit={handleSubmit}
                     className='space-y-6 ng-untouched ng-pristine ng-valid'
                 >
                     <div className='space-y-4'>
@@ -78,7 +113,7 @@ const SignUp = () => {
                     <div className='flex-1 h-px sm:w-16 dark:bg-gray-700'></div>
                 </div>
                 <button
-                    // onClick={handleGooleSignIn}
+                    onClick={handleGooleSignIn}
                     className='disabled:cursor-not-allowed flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
                     <FcGoogle size={32} />
 
