@@ -8,10 +8,12 @@ import {
 import { router } from './Routes/Routes';
 import { HelmetProvider } from 'react-helmet-async';
 import AuthProvider from './pages/Providers/AuthProvider';
+import { Toaster } from 'react-hot-toast';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
+      <Toaster />
       <HelmetProvider>
         <div className='max-w-screen-xl mx-auto'>
           <RouterProvider router={router} />

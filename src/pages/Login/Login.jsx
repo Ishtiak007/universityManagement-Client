@@ -1,38 +1,57 @@
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 
 const Login = () => {
     const { signInUser, googleLogIn } = useAuth()
-    const handleLogin = e => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    // const axiosPublic = useAxiosPublic();
+    const from = location.state?.from?.pathname || "/";
+
+
+    const handleLogin = (e) => {
         e.preventDefault();
-        const email = e.target.email.value;
-        const password = e.target.password.value;
+        const form = e.target;
+        const email = form.email.value;
+        const password = form.password.value;
+        const user = { email, password }
+        console.log(user);
 
         signInUser(email, password)
-            .then((result) => {
-                toast.success('Your Login process Successfully done!');
-                console.log(result.user);
-                e.target.reset();
-                navigate(location?.state ? location.state : '/');
+            .then(res => {
+                const user = res.user;
+                console.log(user)
+                toast.success('User Log in Successfully')
+                navigate(from, { replace: true });
             })
-            .catch((error) => {
-                toast.error("Invalid login credentials , Provide your valid email and password")
-                console.log(error)
+            .catch(err => {
+                console.log(err)
             })
     }
 
+
+
     const handleGoogleLogIn = () => {
         googleLogIn()
-            .then((res) => {
-                toast.success('Google Log In successfully!');
-                console.log(res.user);
-                navigate(location?.state ? location.state : '/');
+            .then(res => {
+                console.log(res);
+                const userInfo = {
+                    email: res.user?.email,
+                    name: res.user?.displayName
+                }
+                axiosPublic.post('/users', userInfo)
+                    .then(res => {
+                        console.log(res.data);
+                        toast.success('Google Log In successfully!');
+                        console.log(res.user);
+                        navigate(location?.state ? location.state : '/');
+                    })
             })
-            .catch((error) => {
-                toast.error("Invalid login credentials")
-                console.log(error)
+            .catch(err => {
+                console.log(err)
             })
     }
     return (
