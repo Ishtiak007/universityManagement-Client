@@ -34,17 +34,17 @@ const Profile = () => {
                     className='w-full mb-4 rounded-t-lg h-44 object-cover'
                 />
                 <div className='flex flex-col items-center justify-center p-4 -mt-16'>
-                    <a href='' target='blank' className='relative block'>
+                    {/* <a href='' target='blank' className='relative block'>
                         <img
                             alt='Photo'
                             src={user?.photoURL}
                             referrerPolicy="no-referrer"
                             className='mx-auto object-cover rounded-full h-24 w-24  border-[3px] p-[1px] border-[#9df26f]'
                         />
-                    </a>
+                    </a> */}
 
                     <p className='p-2 my-4 px-4 text-xs text-white bg-blue-600 rounded-full uppercase'>
-                        {isAdmin ? <>Admin Progile</> : <>User Profile</>}
+                        {isAdmin ? <>Admin Profile</> : <>User Profile</>}
                     </p>
                     <p className='mt-2 text-xl font-medium text-gray-800 '>
                         User Id: {user?.uid}

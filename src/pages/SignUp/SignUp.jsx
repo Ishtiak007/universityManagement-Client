@@ -6,49 +6,67 @@ import toast from 'react-hot-toast';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const SignUp = () => {
-    const { createUser, signInWithGoogle, updateUserProfile } = useAuth();
-    const location = useLocation();
-    // const from = location?.state || '/';
-    const axiosPublic = useAxiosPublic();
+    const { createUser, googleSignIn, updateUserProfile } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const axiosPublic = useAxiosPublic();
+
+    const from = location.state?.from?.pathname || "/";
 
 
 
+    const handleSubmit = (e) => {  // Prevent form from submitting the default way
 
-
-    const handleSubmit = async (e) => {
+        // Collect form data
         e.preventDefault();
         const form = e.target
         const name = form.name.value;
         const email = form.email.value;
         const password = form.password.value;
+        const photoUrl = ''
 
+        // Call createUser function
         createUser(email, password)
             .then(res => {
-                updateUserProfile(name)
+                console.log(res.user);
+
+                // Update user profile
+                updateUserProfile(name, photoUrl)
                     .then(() => {
-                        // console.log('user Updated')
                         const userInfo = {
                             name: name,
-                            email: email
-                        }
+                            email: email,
+                            photoURL: photoUrl
+                        };
+
+                        // Post user info to the database
                         axiosPublic.post('/users', userInfo)
                             .then(res => {
                                 if (res.data.insertedId) {
-                                    console.log('User added to the database')
-                                    toast.success('Signup successfully done')
-                                    navigate(from, { replace: true });
+                                    console.log('User added to the database');
+
+
+
+                                    // Show success alert
+                                    toast.success('Sign up successfully done')
+
+                                    // Navigate to home
+                                    navigate(from);
                                 }
                             })
+                            .catch(error => console.log('Error posting user data:', error));
                     })
-                    .catch(error => toast.error(error.message))
+                    .catch(error => console.log('Error updating profile:', error));
             })
-            .catch(error => toast.error(error.message))
-    }
+            .catch(err => {
+                console.log('Error creating user:', err);
+            });
+    };
+
 
 
     const handleGoogleSignIn = () => {
-        signInWithGoogle()
+        googleSignIn()
             .then(res => {
                 console.log(res);
                 const userInfo = {
@@ -58,8 +76,8 @@ const SignUp = () => {
                 }
                 axiosPublic.post('/users', userInfo)
                     .then(res => {
+                        console.log(res.data);
                         navigate('/')
-                        toast.success('Google signup successfully done')
                     })
             })
             .catch(err => {
