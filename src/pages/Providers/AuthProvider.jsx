@@ -1,119 +1,71 @@
-import PropTypes from 'prop-types'
-import { createContext, useEffect, useState } from 'react'
-import {
-    GoogleAuthProvider,
-    createUserWithEmailAndPassword,
-    getAuth,
-    onAuthStateChanged,
-    sendPasswordResetEmail,
-    signInWithEmailAndPassword,
-    signInWithPopup,
-    signOut,
-    updateProfile,
-} from 'firebase/auth'
-import axios from 'axios'
-import { app } from '../firebase/firebase.config'
-export const AuthContext = createContext(null)
-const auth = getAuth(app)
-const googleProvider = new GoogleAuthProvider()
+import { createContext, useEffect, useState, } from "react";
+import PropTypes from 'prop-types';
+import { GithubAuthProvider, GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { app } from "../../firebase/firebase.config";
+
+
+export const AuthContext = createContext(null);
+const auth = getAuth(app);
+
+const googleProvider = new GoogleAuthProvider();
+
+const gitHubProvider = new GithubAuthProvider();
 
 const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null)
-    const [loading, setLoading] = useState(true)
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const createUser = (email, password) => {
         setLoading(true)
         return createUserWithEmailAndPassword(auth, email, password)
     }
 
-    const signIn = (email, password) => {
+    const signInUser = (email, password) => {
         setLoading(true)
         return signInWithEmailAndPassword(auth, email, password)
     }
 
-    const signInWithGoogle = () => {
+    const googleLogIn = () => {
         setLoading(true)
         return signInWithPopup(auth, googleProvider)
     }
 
-    // const resetPassword = email => {
-    //     setLoading(true)
-    //     return sendPasswordResetEmail(auth, email)
-    // }
-
-    const logOut = async () => {
+    const gitHubLogin = () => {
         setLoading(true)
-        await axios.get(`${import.meta.env.VITE_API_URL}/logout`, {
-            withCredentials: true,
-        })
-        return signOut(auth)
+        return signInWithPopup(auth, gitHubProvider);
     }
 
-    const updateUserProfile = (name, photo) => {
-        return updateProfile(auth.currentUser, {
-            displayName: name,
-            photoURL: photo,
-        })
-    }
-    // Get token from server
-    // const getToken = async email => {
-    //     const { data } = await axios.post(
-    //         `${import.meta.env.VITE_API_URL}/jwt`,
-    //         { email },
-    //         { withCredentials: true }
-    //     )
-    //     return data
-    // }
-
-
-    // save data
-    const saveUser = async user => {
-        const currentUser = {
-            email: user?.email,
-            role: 'guest',
-            status: 'Verified'
-        }
-        const { data } = await axios.put(
-            `${import.meta.env.VITE_API_URL}/user`,
-            currentUser)
-        return data;
+    const logOut = () => {
+        setLoading(true)
+        return signOut(auth);
     }
 
-    // onAuthStateChange
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, currentUser => {
-            setUser(currentUser)
-            if (currentUser) {
-                getToken(currentUser.email)
-                saveUser(currentUser)
-            }
-            setLoading(false)
+        const unSubscribe = onAuthStateChanged(auth, currentUser => {
+            setUser(currentUser);
+            setLoading(false);
         })
         return () => {
-            return unsubscribe()
+            unSubscribe();
         }
-    }, [])
+    }, []);
 
     const authInfo = {
-        user,
-        loading,
-        setLoading,
         createUser,
-        signIn,
-        signInWithGoogle,
-        resetPassword,
+        signInUser,
+        googleLogIn,
+        gitHubLogin,
+        user,
         logOut,
-        updateUserProfile,
+        loading
     }
-
     return (
-        <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
-    )
-}
-
+        <AuthContext.Provider value={authInfo}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
 AuthProvider.propTypes = {
-    // Array of children.
-    children: PropTypes.array,
-}
-
-export default AuthProvider
+    children: PropTypes.node
+};
+export default AuthProvider;
