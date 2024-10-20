@@ -1,45 +1,42 @@
 import { FcGoogle } from "react-icons/fc";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import toast from "react-hot-toast";
-import { useState } from "react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import toast from "react-hot-toast";
 
 
 const Login = () => {
-    const { signInUser, signInWithGoogle, loading, setLoading, } = useAuth();
-    const [email, setEmail] = useState('');
-    const location = useLocation();
-    const from = location?.state || '/';
-    const axiosPublic = useAxiosPublic();
+    const { signIn, googleSignIn } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const axiosPublic = useAxiosPublic();
+
+    const from = location.state?.from?.pathname || "/";
 
 
-    const handleSubmit = async (e) => {
+    const handleLogin = (e) => {
         e.preventDefault();
-        const form = e.target
+        const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
+        const user = { email, password }
+        console.log(user);
 
-        try {
-            setLoading(true)
-            // number 1: sign in user
-
-            await signInUser(email, password)
-
-            navigate(from)
-            toast.success('Signin successfully done')
-
-        } catch (err) {
-            console.log(err);
-            toast.error(err.message);
-            setLoading(false);
-        }
+        signIn(email, password)
+            .then(res => {
+                const user = res.user;
+                console.log(user)
+                toast.success('Login successfully done')
+                navigate(from, { replace: true });
+            })
+            .catch(err => {
+                console.log(err)
+            })
     }
 
 
     const handleGoogleSignIn = () => {
-        signInWithGoogle()
+        googleSignIn()
             .then(res => {
                 console.log(res);
                 const userInfo = {
@@ -49,8 +46,8 @@ const Login = () => {
                 }
                 axiosPublic.post('/users', userInfo)
                     .then(res => {
-                        navigate(from)
-                        toast.success('Signup successfully done')
+                        console.log(res.data);
+                        navigate('/')
                     })
             })
             .catch(err => {
@@ -67,7 +64,7 @@ const Login = () => {
                     </p>
                 </div>
                 <form
-                    onSubmit={handleSubmit}
+                    onSubmit={handleLogin}
                     noValidate=''
                     action=''
                     className='space-y-6 ng-untouched ng-pristine ng-valid'

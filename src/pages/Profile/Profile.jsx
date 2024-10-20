@@ -44,7 +44,7 @@ const Profile = () => {
                     </a>
 
                     <p className='p-2 my-4 px-4 text-xs text-white bg-blue-600 rounded-full uppercase'>
-                        {user?.role === 'admin' ? <>Admin</> : <>User</>}
+                        {isAdmin ? <>Admin Progile</> : <>User Profile</>}
                     </p>
                     <p className='mt-2 text-xl font-medium text-gray-800 '>
                         User Id: {user?.uid}

@@ -8,7 +8,7 @@ import useAxiosPublic from '../../hooks/useAxiosPublic';
 const SignUp = () => {
     const { createUser, signInWithGoogle, updateUserProfile } = useAuth();
     const location = useLocation();
-    const from = location?.state || '/';
+    // const from = location?.state || '/';
     const axiosPublic = useAxiosPublic();
     const navigate = useNavigate();
 
@@ -58,8 +58,8 @@ const SignUp = () => {
                 }
                 axiosPublic.post('/users', userInfo)
                     .then(res => {
-                        navigate(from)
-                        toast.success('Signup successfully done')
+                        navigate('/')
+                        toast.success('Google signup successfully done')
                     })
             })
             .catch(err => {
