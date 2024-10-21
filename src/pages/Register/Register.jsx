@@ -46,7 +46,7 @@ const Register = () => {
                 <title>University Management || Register</title>
             </Helmet>
             <div className="flex justify-center items-center min-h-[110vh]">
-                <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900">
+                <div className="flex flex-col w-[450px] p-3 rounded-md sm:p-10 bg-gray-100 text-gray-900">
                     <div className='mt-6 mb-2 text-center'>
                         <h1 className='my-3 text-4xl font-bold'>Sign Up</h1>
                         <p className='text-sm text-gray-400'>Welcome to REC 2.0</p>
@@ -98,7 +98,7 @@ const Register = () => {
                                 )}
                             </div>
                             <div className="form-control mt-6">
-                                <input className='bg-[#0284C7] w-full rounded-md py-3 text-white cursor-pointer' type="submit" value="Submit" />
+                                <input className='bg-[#0284C7] w-full rounded-md py-3 text-white cursor-pointer mt-4' type="submit" value="Submit" />
                             </div>
                             <div>
                                 <p className='px-6 text-sm text-center text-gray-400'>
@@ -115,7 +115,7 @@ const Register = () => {
                         </div>
 
                     </form>
-                    <div className='flex justify-center items-center mb-4'>
+                    <div className='flex justify-center items-center'>
                         <SocialLogin></SocialLogin>
                     </div>
 
