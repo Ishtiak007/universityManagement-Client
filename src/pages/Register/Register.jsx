@@ -22,7 +22,6 @@ const Register = () => {
                             name: data.name,
                             email: data.email,
                             photoUrl: data.photoUrl,
-                            role: 'user'
                         }
                         axiosPublic.post('/users', userInfo)
                             .then(res => {
@@ -48,7 +47,6 @@ const Register = () => {
             </Helmet>
             <div className="flex justify-center items-center min-h-[110vh]">
                 <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900">
-
                     <div className='mt-6 mb-2 text-center'>
                         <h1 className='my-3 text-4xl font-bold'>Sign Up</h1>
                         <p className='text-sm text-gray-400'>Welcome to REC 2.0</p>

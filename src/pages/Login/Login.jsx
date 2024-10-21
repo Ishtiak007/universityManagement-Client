@@ -7,10 +7,9 @@ import SocialLogin from "../SocialLogin/SocialLogin";
 
 
 const Login = () => {
-    const { signIn, googleSignIn } = useAuth();
+    const { signIn } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-    const axiosPublic = useAxiosPublic();
 
     const from = location.state?.from?.pathname || "/";
 
@@ -35,26 +34,6 @@ const Login = () => {
             })
     }
 
-
-    const handleGoogleSignIn = () => {
-        googleSignIn()
-            .then(res => {
-                console.log(res);
-                const userInfo = {
-                    email: res.user?.email,
-                    name: res.user?.displayName,
-                    photoURL: res.user?.photoURL
-                }
-                axiosPublic.post('/users', userInfo)
-                    .then(res => {
-                        console.log(res.data);
-                        navigate('/')
-                    })
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
     return (
         <div className='flex justify-center items-center min-h-screen'>
             <div className='flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900'>
