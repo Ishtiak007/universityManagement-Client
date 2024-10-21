@@ -15,11 +15,9 @@ const Zego = () => {
 
   const handleLoginClick = (e) => {
     if (user) {
-      // If the user is already logged in, show a toast message
-      toast.success("You are already logged in!");
-      e.preventDefault(); // Prevent navigation to the login page
+      toast.error("You are already logged in!");
+      e.preventDefault();
     } else {
-      // If the user is not logged in, navigate to the login page
       navigate("/login");
     }
   };

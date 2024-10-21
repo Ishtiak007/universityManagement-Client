@@ -87,6 +87,7 @@ export const router = createBrowserRouter([
         path: "/room/:id",
         element: <VideoConferance></VideoConferance>,
       },
+      // ..............................
       {
         path: '/login',
         element: <Login></Login>
