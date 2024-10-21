@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
+import useAuth from "../../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Zego = () => {
   const [input, setInput] = useState("");
@@ -8,6 +10,21 @@ const Zego = () => {
   const submitHandler = () => {
     navigate(`/room/${input}`);
   };
+
+  const { user } = useAuth();
+
+  const handleLoginClick = (e) => {
+    if (user) {
+      // If the user is already logged in, show a toast message
+      toast.success("You are already logged in!");
+      e.preventDefault(); // Prevent navigation to the login page
+    } else {
+      // If the user is not logged in, navigate to the login page
+      navigate("/login");
+    }
+  };
+
+
   return (
     <div>
       <SectionTitle
@@ -32,8 +49,9 @@ const Zego = () => {
             Join
           </button>
           <Link
-            to={'/login'}
-            class="btn mt-2 text-gray-700 hover:text-blue-950 rounded ml-5"
+            to="/login"
+            className="btn mt-2 text-gray-700 hover:text-blue-950 rounded ml-5"
+            onClick={handleLoginClick}
           >
             Login
           </Link>

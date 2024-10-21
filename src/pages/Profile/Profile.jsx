@@ -62,7 +62,7 @@ const Profile = () => {
                                         </p>
 
                                         <div className='my-4'>
-                                            <button className='bg-[#0284C7] w-full rounded-md py-3 text-white'>
+                                            <button className='bg-[#E5E7EB] w-full rounded-md py-3 text-black'>
                                                 Add Video Conference Link
                                             </button>
                                             <button onClick={handleLogOut} className='bg-[#0284C7] w-full rounded-md py-3 text-white mt-3'>
