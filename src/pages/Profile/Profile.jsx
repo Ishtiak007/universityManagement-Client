@@ -8,8 +8,9 @@ import useAdmin from '../../hooks/useAdmin';
 const Profile = () => {
     const { user, logOut } = useAuth()
     const navigate = useNavigate()
-    console.log(user?.role)
-    // const [role] = true
+    const { isAdmin } = useAdmin()
+    console.log(isAdmin)
+
 
     const handleLogOut = () => {
         logOut()
@@ -44,7 +45,7 @@ const Profile = () => {
                     </a> */}
 
                     <p className='p-2 my-4 px-4 text-xs text-white bg-blue-600 rounded-full uppercase'>
-                        {user?.role === 'user' ? <>User Profile</> : <>Admin</>}
+                        {isAdmin ? <>Admin Profile</> : <>User Profile</>}
                     </p>
                     <p className='mt-2 text-xl font-medium text-gray-800 '>
                         User Id: {user?.uid}
