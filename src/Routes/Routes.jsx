@@ -19,8 +19,8 @@ import Student from "../pages/Student/Student";
 import Schedule from "../pages/Schedule/Schedule";
 import VideoConferance from "../pages/VideoConferance/VideoConferance";
 import Login from "../pages/Login/Login";
-import SignUp from "../pages/SignUp/SignUp";
 import Profile from "../pages/Profile/Profile";
+import Register from "../pages/Register/Register";
 
 export const router = createBrowserRouter([
   {
@@ -92,8 +92,8 @@ export const router = createBrowserRouter([
         element: <Login></Login>
       },
       {
-        path: '/signup',
-        element: <SignUp></SignUp>
+        path: '/register',
+        element: <Register></Register>
       },
       {
         path: '/profile',

@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import toast from "react-hot-toast";
+import SocialLogin from "../SocialLogin/SocialLogin";
 
 
 const Login = () => {
@@ -119,17 +120,20 @@ const Login = () => {
                     </p>
                     <div className='flex-1 h-px sm:w-16 dark:bg-gray-700'></div>
                 </div>
-                <button
+                {/* <button
                     onClick={handleGoogleSignIn}
                     className='disabled:cursor-not-allowed flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
                     <FcGoogle size={32} />
 
                     <p>Continue with Google</p>
-                </button>
+                </button> */}
+                <div className='flex justify-center items-center mb-4'>
+                    <SocialLogin></SocialLogin>
+                </div>
                 <p className='px-6 text-sm text-center text-gray-400'>
                     Don&apos;t have an account yet?{' '}
                     <Link
-                        to='/signup'
+                        to='/register'
                         className='hover:underline hover:text-[#0284C7] text-gray-600'
                     >
                         Sign up

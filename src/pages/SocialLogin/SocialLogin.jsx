@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
-import { FaGoogle } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 
 
 const SocialLogin = () => {
@@ -14,7 +14,8 @@ const SocialLogin = () => {
                 console.log(res);
                 const userInfo = {
                     email: res.user?.email,
-                    name: res.user?.displayName
+                    name: res.user?.displayName,
+                    role: 'user'
                 }
                 axiosPublic.post('/users', userInfo)
                     .then(res => {
@@ -29,9 +30,10 @@ const SocialLogin = () => {
     return (
         <div>
             <div>
-                <button onClick={handleGoogleSignIn} className="btn">
-                    <FaGoogle className="text-yellow-400"></FaGoogle>
-                    Google
+                <button onClick={handleGoogleSignIn} className='disabled:cursor-not-allowed flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'>
+                    <FcGoogle size={32} />
+
+                    <p>Continue with Google</p>
                 </button>
             </div>
         </div>
