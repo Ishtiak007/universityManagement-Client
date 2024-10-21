@@ -23,7 +23,8 @@ const SignUp = () => {
         const name = form.name.value;
         const email = form.email.value;
         const password = form.password.value;
-        const photoUrl = ''
+        const photoUrl = '';
+        const role = 'user'
 
         // Call createUser function
         createUser(email, password)
@@ -36,7 +37,8 @@ const SignUp = () => {
                         const userInfo = {
                             name: name,
                             email: email,
-                            photoURL: photoUrl
+                            photoURL: photoUrl,
+                            role: role
                         };
 
                         // Post user info to the database
